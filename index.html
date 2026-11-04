@@ -28,7 +28,8 @@ h1{margin:0;font-size:30px;font-weight:800;color:var(--blue-700);line-height:1.1
 .help{background:#fff;border-radius:22px;padding:12px 20px;margin:0 0 12px;box-shadow:0 2px 10px rgba(0,0,0,.05)}.help h2{margin:0 0 6px;font-size:14px;color:var(--blue-700)}
 .help ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:6px 24px}.help li{font-size:12.5px;line-height:1.45}.help li b{color:#1c1c1c}.help a{color:var(--blue-500)}
 .hide{display:none}
-</style></head><body><div class="page">
+</style><style id="fitcss">html,body{height:100%}.page{padding:10px 20px 8px}header{margin-bottom:6px}h1{font-size:24px}.sub{font-size:12px;margin:0}.logo{width:44px;height:44px}.chips{margin-bottom:8px}.help{margin-bottom:8px;padding:8px 16px}</style>
+</head><body><div class="page">
 <header><div><h1>Equipe</h1><p class="sub">Time responsável pelo ecossistema de BI da De Heus Brasil</p></div><div class="logo"><svg viewBox="0 0 925 925" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M925 462.5C925 717.932 717.932 925 462.5 925C207.068 925 0 717.932 0 462.5C0 207.068 207.068 0 462.5 0C717.932 0 925 207.068 925 462.5Z" fill="white"/>
 <path d="M844 696H82L348.5 882H563L844 696Z" fill="#00923F"/>
@@ -50,7 +51,7 @@ h1{margin:0;font-size:30px;font-weight:800;color:var(--blue-700);line-height:1.1
 </svg></div></header>
 <section class="help"><h2>Quem procurar para cada assunto</h2><ul>
 <li><b>Dúvida ou problema em um relatório:</b> fale com o owner indicado na Matriz de Acessos.</li>
-<li><b>Pedir acesso a uma seção ou relatório:</b> abra um chamado no <a href="https://deheus.atlassian.net/servicedesk/customer/portal/1" target="_blank" rel="noopener">portal de chamados</a>.</li>
+<li><b>Pedir acesso a uma seção ou relatório:</b> abra um chamado no <a href="https://deheus.atlassian.net/servicedesk/customer/portal/1/group/2/create/10" target="_blank" rel="noopener">portal de chamados</a>.</li>
 </ul></section>
 <div class="chips" id="chips"></div><div class="grid" id="grid"></div></div>
 <script>
@@ -61,4 +62,26 @@ g.innerHTML=P.map(p=>`<div class="card" data-r="${p.r}">${p.img?`<img class="av"
 const roles=["Todos","Líder","Membro","Suporte"],c=document.getElementById("chips");
 c.innerHTML=roles.map((r,i)=>`<button class="chip${i?"":" on"}" data-r="${r}">${r}</button>`).join("");
 c.onclick=e=>{const b=e.target.closest(".chip");if(!b)return;c.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===b));g.querySelectorAll(".card").forEach(k=>k.classList.toggle("hide",b.dataset.r!=="Todos"&&k.dataset.r!==b.dataset.r))};
-</script></body></html>
+</script><script>
+(function(){
+  function fit(){
+    var p=document.querySelector('.page');if(!p)return;
+    p.style.zoom=1;document.body.style.overflowY='auto';
+    var vh=window.innerHeight,z=1;
+    for(var i=0;i<4;i++){
+      var h=p.getBoundingClientRect().height;
+      if(h<=vh+1&&z>=1)break;
+      var nz=Math.max(0.6,Math.min(1,z*vh/h));
+      if(Math.abs(nz-z)<0.005)break;
+      z=nz;p.style.zoom=z;
+    }
+    document.body.style.overflowY=(p.getBoundingClientRect().height<=vh+1)?'hidden':'auto';
+  }
+  var raf=0;function sched(){cancelAnimationFrame(raf);raf=requestAnimationFrame(fit);}
+  window.addEventListener('resize',sched);
+  document.getElementById('chips').addEventListener('click',sched);
+  sched();setTimeout(fit,300);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(sched);
+})();
+</script>
+</body></html>
